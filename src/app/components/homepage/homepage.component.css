@@ -32,6 +32,10 @@
     text-decoration: none;
 }
 
+.highlight {
+  color: #fcd34d;
+}
+
 .horizontal-nav {
     display: flex;
     place-items: center;
@@ -73,7 +77,32 @@
     transform: translateX(-50%);
 }
 
+.social-icon img:hover {
+  transform: scale(1.2);
+}
+
 .horizontal-nav li a:hover {
+    color: #ec4899;
+}
+.nav-links li a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #be0f67;
+    transition: width 0.3s ease, left 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-links li a:hover::before {
+    width: calc(100% + 40px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-links li a:hover {
     color: #ec4899;
 }
 

@@ -8,18 +8,16 @@ import { BotService } from 'src/app/services/bot.service';
 })
 export class HomepageComponent {
   isNavOpen: boolean = false;
-  showBotModalButton: boolean = true;
-  isChatOpen = false;
 
   constructor(private botService: BotService) {
   }
 
   downloadResume(): void {
-    const resumePath = 'assets/Saurabh_Fullstack_Resume.pdf';
+    const resumePath = 'assets/Resume-of-Rahat-Kabir-latests.pdf';
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', resumePath);
-    link.setAttribute('download', 'resume.pdf');
+    link.setAttribute('download', 'rahat_resume.pdf');
 
     document.body.appendChild(link);
     link.click();

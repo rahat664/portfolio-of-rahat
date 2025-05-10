@@ -101,12 +101,11 @@
 }
 
 .details img:hover {
-    height: calc(100% +5px);
-    width: calc(100% +5px);
+  transform: scale(1.2);
 }
 
 .social-icon {
-    padding: 20px 0px;
+    padding: 20px 0;
 }
 
 .social-icon img {
