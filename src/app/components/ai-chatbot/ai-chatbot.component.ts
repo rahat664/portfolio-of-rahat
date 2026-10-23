@@ -81,25 +81,8 @@ export class AiChatbotComponent {
     });
   }
 
-  ngOnInit() {
-    this.sendMessage();
-    setTimeout(() => {
-      const initialPayload = {
-        user_text: 'Hi',
-        user_id: '3',
-        company_id: 1
-      };
-      this.getBotResponse(initialPayload);
-    }, 1000);
-    // setTimeout(() => {
-    //   const initialPayload = {
-    //     user_text: 'Who are you? What purpose you build your Developer? Tell your developer basic info me?',
-    //     user_id: '3',
-    //     company_id: 1
-    //   };
-    //   this.getBotResponse(initialPayload);
-    // }, 2000);  // Simulating a short delay before calling the server
-  }
+  // Do not send an unsolicited request when a visitor opens the portfolio.
+  // Chatbot requests are initiated only after a visitor submits a message.
   modelClose() {
     this.isChatOpen = false;
   }
@@ -114,7 +97,7 @@ export class AiChatbotComponent {
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>')
       .replace(/^- (.+)$/gm, '<li>$1</li>')
       .replace(/(<li>.*<\/li>(?:\n<li>.*<\/li>)*)/g, '<ul>$1</ul>')
@@ -137,7 +120,6 @@ export class AiChatbotComponent {
   }
 
   private createPayload() {
-    const user = localStorage.getItem('user');
     return {
       user_text: this.userInput ? this.userInput : "Hi",
       user_id: '3',
