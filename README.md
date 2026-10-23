@@ -1,114 +1,47 @@
-# 🧑‍💻 Rahat Kabir Dhrubo – Portfolio Website
+# Portfolio of Rahat Kabir Dhrubo
 
-Welcome to the source code of [madebyrahat.com](https://madebyrahat.com) — the personal portfolio of **Rahat Kabir Dhrubo**, a passionate Software Engineer based in Dhaka, Bangladesh. This site highlights my professional journey, technical skills, featured projects, and contact information.
+Personal portfolio source for **Rahat Kabir Dhrubo**, a software engineer working with Angular, React, TypeScript, Node.js, NestJS and PostgreSQL.
 
----
+> **Repository status:** This public repository contains an earlier Angular 16 implementation. A separate private recovery repository contains newer Angular 22 work, but its completeness and production deployment have not been verified. Do not assume the public `master` branch is the currently deployed build.
 
-## 🔗 Live Website
+## Featured work
 
-👉 [Visit madebyrahat.com](https://madebyrahat.com)
+| Project | Focus | Code |
+| --- | --- | --- |
+| Garment Production Management System (GPMS) | Next.js, NestJS, PostgreSQL, production workflow UI | [Web](https://github.com/rahat664/gpms-web) · [API](https://github.com/rahat664/gpms-api) |
+| Spotter Flight Search | React, TypeScript, flight API integration and filters | [Repository](https://github.com/rahat664/spotter-flight-search) |
+| CineScope Watchlist | React, search UX, responsive UI, client-side demo auth | [Repository](https://github.com/rahat664/movie-watchlist) |
+| WingsFin Market Dashboard | React, NestJS, Socket.IO and PostgreSQL | [Repository](https://github.com/rahat664/wingsfin-assignment) |
+| Job Board API | NestJS, MongoDB, validation and tests | [Repository](https://github.com/rahat664/jobboard-backend) |
 
----
+This portfolio also summarizes professional experience and published research. Employer projects may be proprietary, and source code should be shared only with appropriate permission.
 
-## 👨‍💼 About Me
+## Technology
 
-**Rahat Kabir Dhrubo**  
-📍 Uttar Badda, Dhaka 1212  
-📧 [rahatkabir20@gmail.com](mailto:rahatkabir20@gmail.com)  
-📞 +880-1754-957665
+- **Frontend:** Angular, React, TypeScript, RxJS, SCSS and responsive interfaces
+- **Backend:** Node.js, NestJS, Express and REST APIs
+- **Data and tooling:** PostgreSQL, MongoDB, Prisma, Docker and Git
 
-Results-driven Software Engineer with 3+ years of experience in designing and developing scalable, high-performance web applications. I specialize in Angular, TypeScript, and Node.js, with expertise in RESTful APIs, microservices, cloud deployment, and real-time tracking systems. I’m passionate about clean code, secure authentication, UI/UX optimization, and solving complex challenges in production environments.
+## Run the public Angular 16 version locally
 
----
-
-## 🛠️ Tech Stack
-
-### 💻 Languages
-- JavaScript, TypeScript, C++
-
-### 🖥️ Frontend
-- Angular, RxJS, NgRx, SCSS, Tailwind CSS, Bootstrap, Angular Material
-
-### 🔗 Backend & Databases
-- Node.js, Express.js, NestJS, Prisma, MongoDB, MySQL, PostgreSQL
-
-### ☁️ Cloud & DevOps
-- AWS, Firebase, CI/CD, Docker, Kubernetes
-
-### 🛠️ Tools
-- VS Code, WebStorm, Git, GitHub, GitLab, Postman, Figma, Jira
-
-### 📌 Methodologies
-- Agile, Scrum, TDD, REST APIs, Microservices Architecture
-
----
-
-## 💼 Experience Highlights
-
-### 🔹 **Software Engineer – Shamolima Ltd.**
-*May 2024 – Present | Gulshan 1, Dhaka*
-- Developed real-time transportation tracking systems with advanced route optimization.
-- Reduced delivery times by 15% using optimized routing algorithms.
-
-### 🔹 **Associate Software Engineer – Athod Tech Ltd.**
-*March 2023 – March 2024 | Jaipur, India*
-- Built scalable components and JWT authentication on the MAAP platform.
-- Improved UI/UX using Angular 15 and Firebase.
-
-### 🔹 **AITS Idea Ltd.**
-*July 2021 – Feb 2023 | Uttara, Dhaka*
-- Led development of POS, ERP, and education systems with Angular and SCSS.
-- Built UI/UX features, dynamic dashboards, and dark/light modes for enterprise apps.
-
-For full details on all roles and contributions, visit [madebyrahat.com](https://madebyrahat.com).
-
----
-
-## 🎓 Education
-
-**B.Sc. in Computer Science & Engineering**  
-*Dhaka International University (2019 – 2022)*  
-**CGPA:** 3.69
-
-Relevant coursework: Data Structures, DBMS, Web Development, Cloud Computing  
-**Hackathons & Contests:**
-- ICPC Dhaka Regional (2019–2021)
-- BUET IUPC (2022)
-- SUST SWE-TECNOVENT Hackathon (2023)
-
----
-
-## 🧪 Research
-
-**IEEE Publication:**
-📄 *Polling Booth-Based E-Voting Scheme Using Blind Signatures*  
-🔗 DOI: [10.1109/10625521](https://doi.org/10.1109/10625521)
-- Blockchain-based secure e-voting system using RSA & blind signatures.
-
----
-
-## 📈 Problem Solving Profiles
-
-- **HackerRank:** 52 Problems Solved
-- **UVA Online Judge:** 10 Problems Solved
-- **CodeChef:** 86 Problems Solved
-- **Codeforces:** 22 Problems Solved
-
----
-
-## 🌐 Community Involvement
-
-**Dhaka International University Programming Club (DIU CPC)**
-- Assistant General Secretary (2021–Present)
-- Organized multiple hackathons, tech fests, and workshops including NASA Space Apps Challenge.
-- Founded *Algohub* for DSA education and *CodeChef DIU Chapter*.
-
----
-
-## 🚀 Run Locally
+Use a Node.js version supported by Angular 16. From the repository root:
 
 ```bash
-git clone https://github.com/your-username/portfolio-angular.git
-cd portfolio-angular
-npm install
-ng serve
+npm ci
+npm start
+```
+
+Open `http://localhost:4200`. To generate a production bundle:
+
+```bash
+npm run build
+```
+
+## Deployment and verification
+
+The public branch has no verified automated deployment contract in this README. Before publishing, confirm which branch the hosting platform builds, verify the website domain, check that the resume file is present, run responsive checks, and test the contact form end-to-end. EmailJS configuration must refer to an authorized account, and user-facing error messages should not expose internal details.
+
+## Contact
+
+[LinkedIn](https://www.linkedin.com/in/rahat664/) · [GitHub](https://github.com/rahat664) · [Email](mailto:rahatkabir20@gmail.com)
+
