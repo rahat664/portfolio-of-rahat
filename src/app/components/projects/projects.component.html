@@ -9,7 +9,7 @@
             <span *ngFor="let project of projects">
                 <app-project-card [topPosition]="project.topPosition" [title]="project.title"
                     [badgeColors]="project.badgeColors" [tools]="project.tools" [myRole]="project.myRole"
-                    [description]="project.description">
+                    [description]="project.description" [gitUrl]="project.gitUrl" [demoUrl]="project.demoUrl">
                 </app-project-card>
             </span>
         </ul>

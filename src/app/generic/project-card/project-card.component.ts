@@ -12,5 +12,7 @@ export class ProjectCardComponent {
   @Input() tools: string[] = [];
   @Input() myRole: string = '';
   @Input() description: string = '';
+  @Input() gitUrl: string = '';
+  @Input() demoUrl: string = '';
 }
 

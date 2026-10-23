@@ -29,6 +29,10 @@
                         <div class="card-content">Description: <span class="description"><span
                                     class="special-char">'</span>{{ description }}<span
                                     class="special-char">'</span>,</span></div>
+                        <div class="project-links" *ngIf="gitUrl || demoUrl">
+                            <a *ngIf="gitUrl" [href]="gitUrl" target="_blank" rel="noopener noreferrer">{{ title.includes('Research') ? 'Publication' : 'View source' }}</a>
+                            <a *ngIf="demoUrl" [href]="demoUrl" target="_blank" rel="noopener noreferrer">Live demo</a>
+                        </div>
                         <div><span class="keyword"></span><span class="special-char">{{ '};' }}</span></div>
                     </div>
                 </div>
