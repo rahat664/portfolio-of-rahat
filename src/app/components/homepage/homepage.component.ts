@@ -28,9 +28,16 @@ export class HomepageComponent {
   toggleNav() {
     this.isNavOpen = !this.isNavOpen;
   }
-  @HostListener('document:touchstart', ['$event'])
-  closeNavOnClickOutside(event: TouchEvent) {
-    this.closeNav()
+  @HostListener('document:click', ['$event'])
+  closeNavOnClickOutside(event: MouseEvent): void {
+    if (!this.isNavOpen) return;
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.navbar')) this.closeNav();
+  }
+
+  @HostListener('document:keydown.escape')
+  closeNavOnEscape(): void {
+    this.closeNav();
   }
   modelClose() {
     this.botService.closeBotModule();
