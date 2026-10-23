@@ -248,3 +248,32 @@ input[type="text"]:focus {
         width: 50%;
     }
 }
+/* Keyboard and touch-friendly chatbot controls, preserving existing icon sizing. */
+.icon-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.icon-control:focus-visible {
+    outline: 2px solid #1a1443;
+    outline-offset: 2px;
+}
+.icon-control:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+.icon-control .control-button {
+    margin: 0;
+}
+.chat-input:focus-visible {
+    outline: 2px solid #1a1443;
+    outline-offset: -2px;
+}

@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { Subscription, timeout } from 'rxjs';
 import { Component, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BotService } from 'src/app/services/bot.service';
@@ -27,6 +28,9 @@ export class AiChatbotComponent {
   isChatOpen: boolean = false;
   isListening: boolean = false;
   recognition: any;
+  private requestSubscription?: Subscription;
+  private modalSubscription?: Subscription;
+  private waitingTimer?: ReturnType<typeof setTimeout>;
 
 
   constructor(
@@ -76,7 +80,7 @@ export class AiChatbotComponent {
     else {
       console.error('Speech recognition is not supported in this browser.');
     }
-    this.botService.botModalStatus$.subscribe(status => {
+    this.modalSubscription = this.botService.botModalStatus$.subscribe(status => {
       this.isChatOpen = status;
     });
   }
@@ -111,121 +115,71 @@ export class AiChatbotComponent {
   }
 
   sendMessage(): void {
-    if (this.userInput.trim()) {
-      const payload = this.createPayload();
-      this.messages.push({ text: this.userInput, sender: 'user' });
-      this.userInput = '';
-      this.getBotResponse(payload);
-    }
+    const text = this.userInput.trim();
+    if (this.isTyping || !text || text.length > 500) return;
+
+    const payload = this.createPayload(text);
+    this.messages.push({ text, sender: 'user' });
+    this.userInput = '';
+    this.getBotResponse(payload);
   }
 
-  private createPayload() {
+  private createPayload(text: string) {
     return {
-      user_text: this.userInput ? this.userInput : "Hi",
+      user_text: text,
       user_id: '3',
       company_id: 1
     };
   }
 
-  // getBotResponse(payload: any): void {
-  //   // const token = localStorage.getItem('Token');
-  //   // if (!token) {
-  //   //   this.messages.push({ text: 'Authorization token is missing.', sender: 'bot' });
-  //   //   console.error('Authorization token is missing.');
-  //   //   return;
-  //   // }
-
-  //   // const headers = new HttpHeaders({
-  //   //   Authorization: `Bearer ${token}`
-  //   // });
-
-  //   this.isTyping = true;
-
-  //   this.http.post<BotResponse>(this.apiUrl, payload).subscribe(
-  //     (response) => {
-  //       this.isTyping = false;
-  //       const sanitizedResponse = this.formatResponseToHTML(response?.response || 'No response available.');
-  //       this.messages.push({ text: sanitizedResponse, sender: 'bot' });
-
-  //       // If voice is enabled, speak the bot's response
-  //       if (this.isVoiceEnabled) {
-  //         this.speakLastMessage();
-  //       }
-  //     },
-  //     (error) => {
-  //       this.isTyping = false;
-  //       this.messages.push({ text: 'Error fetching response from bot.', sender: 'bot' });
-  //       console.error('API Error:', error);
-  //     }
-  //   );
-  // }
-
-
-  getBotResponse(payload: any): void {
+  getBotResponse(payload: { user_text: string; user_id: string; company_id: number }): void {
     this.isTyping = true;
-
-    const timeout1 = setTimeout(() => {
-      this.messages.push({ text: 'Hey there! Just a moment while I get ready...', sender: 'bot' });
-    }, 7000);
-
-    const timeout2 = setTimeout(() => {
-      this.messages.push({ text: 'Almost there! Setting things up for you...', sender: 'bot' });
-    }, 14000);
-
-    const timeout3 = setTimeout(() => {
-      this.messages.push({ text: 'Thanks for your patience! Feel free to ask me anything.', sender: 'bot' });
-    }, 21000);
-
-    const timeout4 = setTimeout(() => {
-      this.messages.push({ text: 'Still here? I’m working on it, won’t be long now!', sender: 'bot' });
-    }, 28000);
-
-    const timeout5 = setTimeout(() => {
-      this.messages.push({ text: 'You can ask questions like: "What services do you offer?" or "Tell me about Rahat?"', sender: 'bot' });
-    }, 35000);
-
-    const timeout6 = setTimeout(() => {
-      this.messages.push({ text: 'Hey, my backend is deployed on a cold start server, which may take a few moments to wake up.', sender: 'bot' });
-    }, 55000);
-
-    const timeout7 = setTimeout(() => {
-      this.messages.push({ text: 'If you are experiencing delays, you may try rephrasing your question or checking your connection.', sender: 'bot' });
-    }, 120000);
-
-    this.http.post<BotResponse>(this.apiUrl, payload).subscribe(
-      (response) => {
-        clearTimeout(timeout1);
-        clearTimeout(timeout2);
-        clearTimeout(timeout3);
-        clearTimeout(timeout4);
-        clearTimeout(timeout5);
-        clearTimeout(timeout6);
-        clearTimeout(timeout7);
-        
-        this.isTyping = false;
-        const sanitizedResponse = this.formatResponseToHTML(response?.response || 'No response available.');
-        this.messages.push({ text: sanitizedResponse, sender: 'bot' });
-
-        if (this.isVoiceEnabled) {
-          this.speakLastMessage();
-        }
-      },
-      (error) => {
-        clearTimeout(timeout1);
-        clearTimeout(timeout2);
-        clearTimeout(timeout3);
-        clearTimeout(timeout4);
-        clearTimeout(timeout5);
-        clearTimeout(timeout6);
-        clearTimeout(timeout7);
-
-        this.isTyping = false;
-        this.messages.push({ text: 'Error fetching response from bot.', sender: 'bot' });
-        console.error('API Error:', error);
+    this.waitingTimer = setTimeout(() => {
+      if (this.isTyping) {
+        this.messages.push({
+          text: 'The chatbot is taking longer than usual to respond. Please wait a moment.',
+          sender: 'bot'
+        });
       }
-    );
+    }, 10000);
+
+    this.requestSubscription = this.http.post<BotResponse>(this.apiUrl, payload)
+      .pipe(timeout({ first: 90000 }))
+      .subscribe({
+        next: (response) => {
+          this.finishRequest();
+          const safeResponse = this.formatResponseToHTML(
+            response?.response || 'No response available.'
+          );
+          this.messages.push({ text: safeResponse, sender: 'bot' });
+          if (this.isVoiceEnabled) this.speakLastMessage();
+        },
+        error: () => {
+          this.finishRequest();
+          this.messages.push({
+            text: 'The chatbot could not respond right now. Please try again later.',
+            sender: 'bot'
+          });
+        }
+      });
   }
 
+  private finishRequest(): void {
+    if (this.waitingTimer !== undefined) {
+      clearTimeout(this.waitingTimer);
+      this.waitingTimer = undefined;
+    }
+    this.isTyping = false;
+  }
+
+  ngOnDestroy(): void {
+    this.requestSubscription?.unsubscribe();
+    this.modalSubscription?.unsubscribe();
+    this.finishRequest();
+    if (this.isListening && this.recognition) {
+      this.recognition.stop();
+    }
+  }
 
   speakLastMessage(): void {
     const lastMessage = this.messages[this.messages.length - 1];

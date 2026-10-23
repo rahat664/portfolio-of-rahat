@@ -3,7 +3,7 @@
         <div class="chat-header">
             <img src="assets/images/hero1.png" alt="Profile" class="profile-img" />
             <span class="chat-title">Chat with AI-Bot</span>
-            <button class="close-btn" (click)="modelClose()">&times;</button>
+            <button type="button" class="close-btn" (click)="modelClose()" aria-label="Close chatbot">&times;</button>
         </div>
         <div class="messages">
             <span class="bot-description">Ask a question to start the chat. Messages are sent to the chatbot service, so please do not include sensitive information.</span>
@@ -25,23 +25,30 @@
         </div>
 
         <div class="input-container">
-            <img *ngIf="isVoiceEnabled" src="assets/images/ai-bots/speaker.svg" class="control-button"
-                (click)="toggleVoice()" alt="Mute" title="Mute Voice" />
-            <img *ngIf="!isVoiceEnabled" src="assets/images/ai-bots/speaker-off.svg" class="control-button"
-                (click)="toggleVoice()" alt="Unmute" title="Unmute Voice" />
+            <button type="button" class="icon-control" (click)="toggleVoice()"
+                [attr.aria-label]="isVoiceEnabled ? 'Mute chatbot voice' : 'Enable chatbot voice'"
+                [attr.aria-pressed]="isVoiceEnabled">
+                <img [src]="isVoiceEnabled ? 'assets/images/ai-bots/speaker.svg' : 'assets/images/ai-bots/speaker-off.svg'"
+                    alt="" class="control-button" />
+            </button>
 
             <div class="vertical-line"></div>
 
-            <input type="text" [(ngModel)]="userInput" placeholder="Ask me something..." class="chat-input"
-                (keydown.enter)="sendMessage()" />
+            <input type="text" [(ngModel)]="userInput" placeholder="Ask me something..."
+                class="chat-input" aria-label="Your chatbot message" maxlength="500"
+                [disabled]="isTyping" (keydown.enter)="sendMessage()" />
 
-            <img *ngIf="isListening" src="assets/images/ai-bots/mic.svg" class="control-button mic-button"
-                (click)="toggleVoiceInput()" alt="Listening" title="Stop Listening" />
-            <img *ngIf="!isListening" src="assets/images/ai-bots/mic-off.svg" class="control-button mic-button"
-                (click)="toggleVoiceInput()" alt="Mic Off" title="Start Listening" />
+            <button type="button" class="icon-control" (click)="toggleVoiceInput()"
+                [disabled]="!recognition"
+                [attr.aria-label]="isListening ? 'Stop voice input' : 'Start voice input'">
+                <img [src]="isListening ? 'assets/images/ai-bots/mic.svg' : 'assets/images/ai-bots/mic-off.svg'"
+                    alt="" class="control-button mic-button" />
+            </button>
 
-            <img src="assets/images/ai-bots/send.svg" class="control-button send-button" (click)="sendMessage()"
-                alt="Send Message" title="Send Message" />
+            <button type="button" class="icon-control" (click)="sendMessage()"
+                [disabled]="isTyping || !userInput.trim()" aria-label="Send chatbot message">
+                <img src="assets/images/ai-bots/send.svg" class="control-button send-button" alt="" />
+            </button>
         </div>
 
 
