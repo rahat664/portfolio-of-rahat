@@ -1,17 +1,17 @@
-<div class="background-container">
+<div id="home" class="background-container">
     <div class="nav">
         <div class="container navbar">
             <a href="#home" class="nav-heading">RAHAT KABIR DHRUBO</a>
-            <div class="nav-toggle" (click)="toggleNav()"><i class="fa-solid fa-bars fa-2xl"
-                    style="color: #ffffff;"></i></div>
-            <ul class="nav-links"  [class.open]="isNavOpen">
-                <li (click)="closeNav()" class="text-end"><i class="fa-solid fa-xmark fa-2xl"
-                        style="color: #ffffff; cursor: pointer"></i></li>
+            <button type="button" class="nav-toggle" (click)="toggleNav()" [attr.aria-expanded]="isNavOpen" aria-controls="portfolio-mobile-nav" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars fa-2xl" aria-hidden="true"></i>
+            </button>
+            <ul id="portfolio-mobile-nav" class="nav-links" [class.open]="isNavOpen">
+                <li class="text-end"><button class="nav-close" type="button" (click)="closeNav()" aria-label="Close navigation"><i class="fa-solid fa-xmark fa-2xl" aria-hidden="true"></i></button></li>
                 <li class=""><a href="#home" (click)="closeNav()">ABOUT</a></li>
                 <li class=""><a href="#experience" (click)="closeNav()">EXPERIENCE</a></li>
                 <li class=""><a href="#skills" (click)="closeNav()">SKILLS</a></li>
                 <li class=""><a href="#education" (click)="closeNav()">EDUCATION</a></li>
-<li><a href="#project" (click)="closeNav()">PROJECTS</a></li>
+                <li><a href="#project" (click)="closeNav()">PROJECTS</a></li>
                 <li class=""><a href="#contact" (click)="closeNav()">CONTACT ME</a></li>
             </ul>
             <ul class="horizontal-nav">
@@ -19,7 +19,7 @@
                 <li class=""><a href="#experience" class="">EXPERIENCE</a></li>
                 <li class=""><a href="#skills" class="">SKILLS</a></li>
                 <li class=""><a href="#education" class="">EDUCATION</a></li>
-<li><a href="#project">PROJECTS</a></li>
+                <li><a href="#project">PROJECTS</a></li>
                 <li class=""><a href="#contact" class="">CONTACT ME</a></li>
             </ul>
         </div>
@@ -37,18 +37,16 @@
                             Professional <span style="color: #16f2b3;">Software Engineer</span>.
                         </h1>
                         <div class="social-icon py-5">
-                            <a  target="_blank" href="https://github.com/rahat664" class="mx-2"><img
+                            <a  target="_blank" rel="noopener noreferrer" href="https://github.com/rahat664" class="mx-2"><img
                                     src="assets/images/icon/pink-git.svg" alt=""></a>
-                            <a target="_blank" href="https://www.linkedin.com/in/rahat664" class="mx-2"><img
+                            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/rahat664" class="mx-2"><img
                                     src="assets/images/icon/pink-linkdin.svg" alt=""></a>
-                            <a target="_blank" href="https://www.facebook.com/rahat6452" class="mx-2"><img src="assets/images/icon/pink-fb.svg" alt=""></a>
-                            <a target="_blank" href="https://x.com/rahat64527" class="mx-2"><img src="assets/images/icon/pink-x.svg" alt=""></a>
+                            <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/rahat6452" class="mx-2"><img src="assets/images/icon/pink-fb.svg" alt=""></a>
+                            <a target="_blank" rel="noopener noreferrer" href="https://x.com/rahat64527" class="mx-2"><img src="assets/images/icon/pink-x.svg" alt=""></a>
                         </div>
                         <div class="hero-button py-3">
-                            <a href="#contact" class="mx-2">
-                                <button class="btn py-3"> CONTACT US
-                                    <img src="assets/images/icon/user.svg" alt="" class="mb-1">
-                                </button>
+                            <a href="#contact" class="btn py-3 mx-2" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">CONTACT ME
+                                <img src="assets/images/icon/user.svg" alt="" class="mb-1">
                             </a>
                             <button type="button" class="btn2 py-3 mx-2" (click)="downloadResume()">GET RESUME
                                     <img src="assets/images/icon/download.svg" alt="">
