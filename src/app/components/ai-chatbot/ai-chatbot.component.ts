@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BotService } from 'src/app/services/bot.service';
 
@@ -104,7 +104,13 @@ export class AiChatbotComponent {
     this.isChatOpen = false;
   }
   formatResponseToHTML(text: string): SafeHtml {
-    const formatted = text
+    const escaped = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    const formatted = escaped
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/`([^`]+)`/g, '<code>$1</code>')
@@ -118,7 +124,7 @@ export class AiChatbotComponent {
       .replace(/<\/ul><br>/g, '</ul>')
       .replace(/<\/ol><br>/g, '</ol>');
 
-    return this.sanitizer.bypassSecurityTrustHtml(formatted);
+    return this.sanitizer.sanitize(SecurityContext.HTML, formatted) || "";
   }
 
   sendMessage(): void {
@@ -193,7 +199,7 @@ export class AiChatbotComponent {
     }, 28000);
 
     const timeout5 = setTimeout(() => {
-      this.messages.push({ text: 'You can ask questions like: "What services do you offer?" or "Tell me about Saurabh?"', sender: 'bot' });
+      this.messages.push({ text: 'You can ask questions like: "What services do you offer?" or "Tell me about Rahat?"', sender: 'bot' });
     }, 35000);
 
     const timeout6 = setTimeout(() => {
@@ -240,7 +246,6 @@ export class AiChatbotComponent {
 
 
   speakLastMessage(): void {
-    debugger
     const lastMessage = this.messages[this.messages.length - 1];
     if (lastMessage && lastMessage.sender === 'bot') {
       let plainText = typeof lastMessage.text === 'string'
