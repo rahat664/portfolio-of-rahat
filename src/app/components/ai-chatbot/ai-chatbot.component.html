@@ -6,8 +6,8 @@
             <button class="close-btn" (click)="modelClose()">&times;</button>
         </div>
         <div class="messages">
-            <span class="bot-description">Hello! Give me a moment to wake up...</span>
-            <span class="bot-description">This AI chatbot showcases my skills and assists with portfolio queries.</span>
+            <span class="bot-description">Ask a question to start the chat. Messages are sent to the chatbot service, so please do not include sensitive information.</span>
+            <span class="bot-description">This optional chatbot answers portfolio-related questions.</span>
 
             <div *ngFor="let message of messages"
                 [ngClass]="{ 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot' }">
