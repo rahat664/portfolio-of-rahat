@@ -12,7 +12,8 @@
             <div *ngFor="let message of messages"
                 [ngClass]="{ 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot' }">
                 <div class="message-content">
-                    <p [innerHTML]="message.text"></p>
+                    <p *ngIf="message.sender === 'user'">{{ message.text }}</p>
+                    <p *ngIf="message.sender === 'bot'" [innerHTML]="message.text"></p>
                 </div>
             </div>
 
