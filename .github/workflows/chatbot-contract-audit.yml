@@ -1,0 +1,35 @@
+name: Chatbot Public Contract Audit
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - 'scripts/chatbot-public-contract-audit.cjs'
+      - '.github/workflows/chatbot-contract-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-contract-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read publicly accessible chatbot API metadata (no chat messages)
+        run: node scripts/chatbot-public-contract-audit.cjs
+        continue-on-error: true
+      - name: Upload minimal allowlisted audit summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatbot-public-contract-audit
+          path: artifacts/chatbot-public-contract-audit.json
+          if-no-files-found: ignore
+          retention-days: 7
