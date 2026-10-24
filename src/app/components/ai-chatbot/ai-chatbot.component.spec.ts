@@ -42,6 +42,7 @@ describe('AiChatbotComponent', () => {
   });
 
   it('only allows one in-flight opted-in message at a time', () => {
+    botService.openBotModule();
     component.setChatConsent(true);
     component.userInput = 'Hello';
     component.sendMessage();
@@ -60,6 +61,7 @@ describe('AiChatbotComponent', () => {
   });
 
   it('cancels an in-flight request and clears text when consent is revoked', () => {
+    botService.openBotModule();
     component.setChatConsent(true);
     component.userInput = 'Please explain Angular';
     component.sendMessage();
@@ -88,6 +90,42 @@ describe('AiChatbotComponent', () => {
     expect(request.cancelled).toBeTrue();
     expect(component.chatConsent).toBeFalse();
     expect(component.messages.length).toBe(0);
+  });
+
+  it('cannot enable a hidden chatbot or send a message without an open dialog', () => {
+    component.setChatConsent(true);
+    expect(component.chatConsent).toBeFalse();
+    component.userInput = 'No outgoing requests';
+    component.sendMessage();
+    http.expectNone(component.apiUrl);
+  });
+
+  it('does not reactivate consent or send after the dialog is closed', () => {
+    botService.openBotModule();
+    component.setChatConsent(true);
+    component.modelClose();
+    component.setChatConsent(true);
+    component.userInput = 'Should remain private';
+    component.sendMessage();
+
+    expect(component.isChatOpen).toBeFalse();
+    expect(component.chatConsent).toBeFalse();
+    http.expectNone(component.apiUrl);
+  });
+
+  it('does not enable speech input without consent and an open dialog', () => {
+    component.recognition = jasmine.createSpyObj('recognition', ['start', 'stop']);
+    component.startVoiceInput();
+    expect(component.recognition.start).not.toHaveBeenCalled();
+
+    botService.openBotModule();
+    component.startVoiceInput();
+    expect(component.recognition.start).not.toHaveBeenCalled();
+
+    component.setChatConsent(true);
+    component.startVoiceInput();
+    expect(component.recognition.start).toHaveBeenCalledTimes(1);
+    expect(component.isListening).toBeTrue();
   });
 
   it('does not convert unsafe markdown URL protocols to clickable links', () => {
