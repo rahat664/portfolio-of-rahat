@@ -12,19 +12,6 @@ export class HomepageComponent {
   constructor(private botService: BotService) {
   }
 
-  downloadResume(): void {
-    const resumePath = 'assets/Resume-of-Rahat-Kabir-latests.pdf';
-    const link = document.createElement('a');
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', resumePath);
-    link.setAttribute('download', 'rahat_resume.pdf');
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-  }
-
   toggleNav() {
     this.isNavOpen = !this.isNavOpen;
   }
