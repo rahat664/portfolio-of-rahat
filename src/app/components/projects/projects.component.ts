@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 export class ProjectsComponent {
   projects = [
     {
-      topPosition: 0,
       title: "GPMS: Garment Production Management",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["Next.js","React","NestJS","Prisma","PostgreSQL"],
@@ -18,7 +17,6 @@ export class ProjectsComponent {
       demoUrl: "https://gpms-web664.vercel.app"
     },
     {
-      topPosition: 68,
       title: "Spotter: Flight Search",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["React","TypeScript","Amadeus API","Zustand","Recharts"],
@@ -28,7 +26,6 @@ export class ProjectsComponent {
       demoUrl: ""
     },
     {
-      topPosition: 136,
       title: "CineScope: Movie Watchlist",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["React","TypeScript","Vite","Tailwind CSS"],
@@ -38,7 +35,6 @@ export class ProjectsComponent {
       demoUrl: "https://movie-watchlist-app-six.vercel.app"
     },
     {
-      topPosition: 204,
       title: "WingsFin: Market Dashboard",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["React","NestJS","Socket.IO","PostgreSQL"],
@@ -48,7 +44,6 @@ export class ProjectsComponent {
       demoUrl: ""
     },
     {
-      topPosition: 272,
       title: "Job Board REST API",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["NestJS","MongoDB","Mongoose","Jest"],
@@ -58,7 +53,6 @@ export class ProjectsComponent {
       demoUrl: ""
     },
     {
-      topPosition: 340,
       title: "Supply Chain & Logistics Systems",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["Angular","TypeScript","REST APIs","Maps"],
@@ -68,7 +62,6 @@ export class ProjectsComponent {
       demoUrl: ""
     },
     {
-      topPosition: 408,
       title: "Polling Booth-Based E-Voting Research",
       badgeColors: ['#16f2b3', '#60a5fa', '#facc15'],
       tools: ["RSA","Blind Signatures","Research"],
