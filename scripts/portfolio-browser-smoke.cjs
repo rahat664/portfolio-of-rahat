@@ -76,6 +76,10 @@ async function render(url, viewport, fileName) {
   for (const marker of ['GPMS: Garment Production Management', 'Spotter: Flight Search', 'CineScope: Movie Watchlist']) {
     if (!stdout.includes(marker)) throw new Error('Missing rendered project: ' + marker);
   }
+    if (!stdout.includes('This optional chatbot uses a separate external service.') ||
+      !stdout.includes('I understand that messages I submit will be sent to the external chatbot service. Enable chat.')) {
+    throw new Error('Required chatbot third-party processing disclosure is absent');
+  }
   if (!stdout.includes('Resume-of-Rahat-Kabir-latests.pdf')) {
     throw new Error('Rendered page is missing the resume download link');
   }
