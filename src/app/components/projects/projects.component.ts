@@ -23,7 +23,7 @@ export class ProjectsComponent {
       myRole: "Frontend and API integration",
       description: "Flight search interface with rich filtering, normalized flight results, and synchronized price visualizations. Server-side API functions keep provider credentials out of the browser.",
       gitUrl: "https://github.com/rahat664/spotter-flight-search",
-      demoUrl: ""
+      demoUrl: "https://spotter-flight-search-rho.vercel.app"
     },
     {
       title: "CineScope: Movie Watchlist",
