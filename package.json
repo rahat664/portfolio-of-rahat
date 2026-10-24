@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "smoke:browser": "node scripts/portfolio-browser-smoke.cjs"
   },
   "private": true,
   "dependencies": {

@@ -29,3 +29,13 @@ jobs:
         run: npm test -- --watch=false --browsers=ChromeHeadless --progress=false
         env:
           CHROME_BIN: /usr/bin/google-chrome
+      - name: Render and smoke-test compiled portfolio at mobile and desktop widths
+        run: npm run smoke:browser
+      - name: Upload smoke-test screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-browser-screenshots
+          path: artifacts/portfolio-*.png
+          if-no-files-found: ignore
+          retention-days: 7
