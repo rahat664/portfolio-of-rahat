@@ -48,6 +48,10 @@ export class AiChatbotComponent {
       this.recognition.maxAlternatives = 1;
 
       this.recognition.onresult = (event: any) => {
+        // SpeechRecognition may deliver a final result after stop() or dialog close.
+        // Never restore private input or send it unless consent and recording are active.
+        if (!this.isChatOpen || !this.chatConsent || !this.isListening) return;
+
         let interimTranscript = '';
         let finalTranscript = '';
 
@@ -99,7 +103,8 @@ export class AiChatbotComponent {
       this.clearPrivateChat();
       return;
     }
-    this.chatConsent = true;
+    // Programmatic calls cannot enable external processing while the dialog is closed.
+    if (this.isChatOpen) this.chatConsent = true;
   }
 
   private clearPrivateChat(): void {
@@ -107,6 +112,7 @@ export class AiChatbotComponent {
     this.requestSubscription = undefined;
     this.finishRequest();
     this.chatConsent = false;
+    this.isVoiceEnabled = false;
     this.userInput = '';
     this.messages = [];
     if (this.isListening && this.recognition) {
@@ -143,7 +149,7 @@ export class AiChatbotComponent {
 
   sendMessage(): void {
     const text = this.userInput.trim();
-    if (!this.chatConsent || this.isTyping || !text || text.length > 500) return;
+    if (!this.isChatOpen || !this.chatConsent || this.isTyping || !text || text.length > 500) return;
 
     const payload = this.createPayload(text);
     this.messages.push({ text, sender: 'user' });
@@ -159,7 +165,7 @@ export class AiChatbotComponent {
     };
   }
 
-  getBotResponse(payload: { user_text: string; user_id: string; company_id: number }): void {
+  private getBotResponse(payload: { user_text: string; user_id: string; company_id: number }): void {
     this.isTyping = true;
     this.waitingTimer = setTimeout(() => {
       if (this.isTyping) {
@@ -240,7 +246,7 @@ export class AiChatbotComponent {
   }
 
   startVoiceInput(): void {
-    if (this.recognition) {
+    if (this.recognition && this.chatConsent && this.isChatOpen) {
       this.isListening = true;
       this.recognition.start();
     }
