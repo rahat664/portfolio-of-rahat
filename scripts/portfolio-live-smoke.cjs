@@ -61,6 +61,10 @@ async function render(viewport, screenshotName) {
   ]) {
     if (!stdout.includes(text)) throw new Error('Missing live DOM marker: ' + text);
   }
+  if (!stdout.includes('This optional chatbot uses a separate external service.') ||
+      !stdout.includes('I understand that messages I submit will be sent to the external chatbot service. Enable chat.')) {
+    throw new Error('Required chatbot third-party processing disclosure is absent');
+  }
   const output = path.join(artifacts, screenshotName);
   await exec('google-chrome', chromeFlags.concat(['--screenshot=' + output, page]), {
     timeout: 65000, maxBuffer: 4 * 1024 * 1024
