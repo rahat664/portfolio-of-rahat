@@ -1,0 +1,31 @@
+name: Portfolio CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Compile Angular production bundle
+        run: npm run build
+      - name: Run browser unit tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless --progress=false
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
