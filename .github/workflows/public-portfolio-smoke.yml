@@ -1,0 +1,35 @@
+name: Public Portfolio Smoke
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-readonly-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check public live URL, resume and rendered sections
+        run: node scripts/portfolio-live-smoke.cjs
+        env:
+          PORTFOLIO_PRODUCTION_URL: https://portfolio-of-rahat.vercel.app/
+      - name: Upload live browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-live-smoke-screenshots
+          path: artifacts/portfolio-live-*.png
+          if-no-files-found: ignore
+          retention-days: 7
