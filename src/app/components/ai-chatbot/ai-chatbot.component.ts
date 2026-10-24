@@ -24,6 +24,7 @@ export class AiChatbotComponent {
   apiUrl: string = 'https://ai-chatbot-5qwd.onrender.com/converse';
   // apiUrl: string = 'http://127.0.0.1:8000/converse';
   isTyping = false;
+  chatConsent = false;
   isVoiceEnabled: boolean = false;
   isChatOpen: boolean = false;
   isListening: boolean = false;
@@ -81,14 +82,40 @@ export class AiChatbotComponent {
       console.error('Speech recognition is not supported in this browser.');
     }
     this.modalSubscription = this.botService.botModalStatus$.subscribe(status => {
+      if (!status && this.isChatOpen) this.clearPrivateChat();
       this.isChatOpen = status;
     });
   }
 
   // Do not send an unsolicited request when a visitor opens the portfolio.
   // Chatbot requests are initiated only after a visitor submits a message.
-  modelClose() {
-    this.isChatOpen = false;
+  modelClose(): void {
+    // Route closing through the shared modal service so pending work is cancelled.
+    this.botService.closeBotModule();
+  }
+
+  setChatConsent(enabled: boolean): void {
+    if (!enabled) {
+      this.clearPrivateChat();
+      return;
+    }
+    this.chatConsent = true;
+  }
+
+  private clearPrivateChat(): void {
+    this.requestSubscription?.unsubscribe();
+    this.requestSubscription = undefined;
+    this.finishRequest();
+    this.chatConsent = false;
+    this.userInput = '';
+    this.messages = [];
+    if (this.isListening && this.recognition) {
+      this.recognition.stop();
+      this.isListening = false;
+    }
+    if (typeof speechSynthesis !== 'undefined') {
+      speechSynthesis.cancel();
+    }
   }
   formatResponseToHTML(text: string): SafeHtml {
     const escaped = text
@@ -101,7 +128,7 @@ export class AiChatbotComponent {
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
       .replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>')
       .replace(/^- (.+)$/gm, '<li>$1</li>')
       .replace(/(<li>.*<\/li>(?:\n<li>.*<\/li>)*)/g, '<ul>$1</ul>')
@@ -116,7 +143,7 @@ export class AiChatbotComponent {
 
   sendMessage(): void {
     const text = this.userInput.trim();
-    if (this.isTyping || !text || text.length > 500) return;
+    if (!this.chatConsent || this.isTyping || !text || text.length > 500) return;
 
     const payload = this.createPayload(text);
     this.messages.push({ text, sender: 'user' });
@@ -173,12 +200,8 @@ export class AiChatbotComponent {
   }
 
   ngOnDestroy(): void {
-    this.requestSubscription?.unsubscribe();
+    this.clearPrivateChat();
     this.modalSubscription?.unsubscribe();
-    this.finishRequest();
-    if (this.isListening && this.recognition) {
-      this.recognition.stop();
-    }
   }
 
   speakLastMessage(): void {
