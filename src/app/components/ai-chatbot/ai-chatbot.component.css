@@ -277,3 +277,37 @@ input[type="text"]:focus {
     outline: 2px solid #1a1443;
     outline-offset: -2px;
 }
+
+
+/* Make external message transmission a clearly optional, keyboard-accessible choice. */
+.chat-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #cdc4e9;
+    border-radius: 8px;
+    background: #f6f2ff;
+    color: #1a1443;
+    line-height: 1.45;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.chat-consent input {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #1a1443;
+}
+.chat-consent input:focus-visible {
+    outline: 2px solid #1a1443;
+    outline-offset: 3px;
+}
+.chat-module .bot-description {
+    display: block;
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #3e336a;
+}
