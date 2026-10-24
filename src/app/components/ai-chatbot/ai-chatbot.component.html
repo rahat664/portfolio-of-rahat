@@ -1,13 +1,17 @@
 <div class="main_container">
-    <div class="chat-module" [class.open]="isChatOpen">
+    <div class="chat-module" [class.open]="isChatOpen" role="dialog" aria-label="Optional portfolio chatbot" [attr.inert]="isChatOpen ? null : ''">
         <div class="chat-header">
             <img src="assets/images/hero1.png" alt="Profile" class="profile-img" />
             <span class="chat-title">Chat with AI-Bot</span>
             <button type="button" class="close-btn" (click)="modelClose()" aria-label="Close chatbot">&times;</button>
         </div>
         <div class="messages">
-            <span class="bot-description">Ask a question to start the chat. Messages are sent to the chatbot service, so please do not include sensitive information.</span>
-            <span class="bot-description">This optional chatbot answers portfolio-related questions.</span>
+            <p class="bot-description">This optional chatbot uses a separate external service. Do not share personal, confidential or sensitive information.</p>
+            <label class="chat-consent">
+                <input type="checkbox" [checked]="chatConsent"
+                    (change)="setChatConsent($any($event.target).checked)" />
+                <span>I understand that messages I submit will be sent to the external chatbot service. Enable chat.</span>
+            </label>
 
             <div *ngFor="let message of messages"
                 [ngClass]="{ 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot' }">
@@ -36,17 +40,17 @@
 
             <input type="text" [(ngModel)]="userInput" placeholder="Ask me something..."
                 class="chat-input" aria-label="Your chatbot message" maxlength="500"
-                [disabled]="isTyping" (keydown.enter)="sendMessage()" />
+                [disabled]="!chatConsent || isTyping" (keydown.enter)="sendMessage()" />
 
             <button type="button" class="icon-control" (click)="toggleVoiceInput()"
-                [disabled]="!recognition"
+                [disabled]="!chatConsent || !recognition"
                 [attr.aria-label]="isListening ? 'Stop voice input' : 'Start voice input'">
                 <img [src]="isListening ? 'assets/images/ai-bots/mic.svg' : 'assets/images/ai-bots/mic-off.svg'"
                     alt="" class="control-button mic-button" />
             </button>
 
             <button type="button" class="icon-control" (click)="sendMessage()"
-                [disabled]="isTyping || !userInput.trim()" aria-label="Send chatbot message">
+                [disabled]="!chatConsent || isTyping || !userInput.trim()" aria-label="Send chatbot message">
                 <img src="assets/images/ai-bots/send.svg" class="control-button send-button" alt="" />
             </button>
         </div>
