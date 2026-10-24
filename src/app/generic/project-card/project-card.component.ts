@@ -6,7 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./project-card.component.css']
 })
 export class ProjectCardComponent {
-  @Input() topPosition: number = 0;
   @Input() title: string = '';
   @Input() badgeColors: string[] = [];
   @Input() tools: string[] = [];
