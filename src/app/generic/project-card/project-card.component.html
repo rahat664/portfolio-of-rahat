@@ -1,4 +1,4 @@
-<li class="scroll_card" [style.top.px]="topPosition">
+<article class="scroll_card" [attr.aria-label]="title">
     <div class="card__content">
         <div class="card">
             <div class="gradient">
@@ -8,11 +8,9 @@
             </div>
             <div class="custom-border">
                 <div class="circle">
-                    <span *ngFor="let badgeColor of badgeColors" class="badge1 mx-1"
+                    <span *ngFor="let badgeColor of badgeColors" aria-hidden="true" class="badge1 mx-1"
                         [style.background]="badgeColor"></span>
-                    <div class="title ms-5">
-                        <span>{{ title }}</span>
-                    </div>
+                    <h3 class="title ms-3 mb-0">{{ title }}</h3>
                 </div>
                 <div class="hero-card">
                     <div class="card-body">
@@ -39,4 +37,4 @@
             </div>
         </div>
     </div>
-</li>
+</article>

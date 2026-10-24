@@ -1,17 +1,17 @@
-<div class="projects">
-    <div class="container py-2">
+<section class="projects" aria-labelledby="projects-heading">
+    <div class="container py-4">
         <div class="py-5">
-            <div class="blur"></div>
-            <span class="pills">Projects</span>
-            <div class="line"></div>
+            <div class="blur" aria-hidden="true"></div>
+            <h2 id="projects-heading" class="pills">Featured Projects</h2>
+            <div class="line" aria-hidden="true"></div>
         </div>
-        <ul id="cards" class="p-0 m-0">
-            <span *ngFor="let project of projects">
-                <app-project-card [topPosition]="project.topPosition" [title]="project.title"
+        <ul id="cards" class="projects-grid">
+            <li *ngFor="let project of projects">
+                <app-project-card [title]="project.title"
                     [badgeColors]="project.badgeColors" [tools]="project.tools" [myRole]="project.myRole"
                     [description]="project.description" [gitUrl]="project.gitUrl" [demoUrl]="project.demoUrl">
                 </app-project-card>
-            </span>
+            </li>
         </ul>
     </div>
-</div>
+</section>
